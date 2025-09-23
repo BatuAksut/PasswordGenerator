@@ -1,6 +1,4 @@
-﻿using System.Linq.Expressions;
-
-bool isRunning = true;
+﻿bool isRunning = true;
 
 string lowercase = "abcdefghijklmnopqrstuvwxyz";
 string uppercase = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
@@ -36,7 +34,7 @@ while (isRunning)
                 Console.WriteLine("Invalid length");
                 break;
             }
-            GeneratePasswordWithLength(intLength);
+            GenerateDefaultPassword(intLength);
             break;
 
         case "3":
@@ -49,6 +47,9 @@ while (isRunning)
             var includeDigits = Console.ReadLine();
             Console.WriteLine("Include symbols (!@#$%^&*) ? (y/n)");
             var includeSymbols = Console.ReadLine();
+
+
+
             bool? includeLowercaseBool = includeLowercase.ToLower() == "y" ? true : includeLowercase.ToLower() == "n" ? false : null;
             bool? includeUppercaseBool = includeUppercase.ToLower() == "y" ? true : includeUppercase.ToLower() == "n" ? false : null;
             bool? includeDigitsBool = includeDigits.ToLower() == "y" ? true : includeDigits.ToLower() == "n" ? false : null;
@@ -59,17 +60,17 @@ while (isRunning)
 
 
         case "4":
-            GeneratePasswordWithoutLowercase();
+            GenerateDefaultPassword(length:null,without:"lower");
             break;
 
         case "5":
-            GeneratePasswordWithoutUpperCase();
+            GenerateDefaultPassword(length: null, without: "upper");
             break;
         case "6":
-            GeneratePasswordWithoutDigits();
+            GenerateDefaultPassword(length: null, without: "digits");
             break;
         case "7":
-            GeneratePasswordWithoutSymbols();
+            GenerateDefaultPassword(length: null, without: "symbols");
             break;
         case "8":
             Console.WriteLine("Exiting");
@@ -85,81 +86,6 @@ while (isRunning)
 
 }
 
-void GeneratePasswordWithoutSymbols()
-{
-    string characters = "";
-    characters += lowercase;
-    characters += digits;
-    characters += uppercase;
-
-    Random rnd = new Random();
-    var password = "";
-    for (int i = 0; i < 12; i++)
-    {
-        var number = rnd.Next(0, characters.Length);
-        password += characters[number];
-    }
-    Console.WriteLine("\nPassword Generated:");
-    Console.WriteLine(password);
-    Console.WriteLine("\n\n");
-}
-
-void GeneratePasswordWithoutDigits()
-{
-    string characters = "";
-    characters += lowercase;
-    characters += uppercase;
-    characters += symbols;
-
-    Random rnd = new Random();
-    var password = "";
-    for (int i = 0; i < 12; i++)
-    {
-        var number = rnd.Next(0, characters.Length);
-        password += characters[number];
-    }
-    Console.WriteLine("\nPassword Generated:");
-    Console.WriteLine(password);
-    Console.WriteLine("\n\n");
-}
-
-void GeneratePasswordWithoutUpperCase()
-{
-    string characters = "";
-    characters += lowercase;
-    characters += digits;
-    characters += symbols;
-
-    Random rnd = new Random();
-    var password = "";
-    for (int i = 0; i < 12; i++)
-    {
-        var number = rnd.Next(0, characters.Length);
-        password += characters[number];
-    }
-    Console.WriteLine("\nPassword Generated:");
-    Console.WriteLine(password);
-    Console.WriteLine("\n\n");
-}
-
-void GeneratePasswordWithoutLowercase()
-{
-    string characters = "";
-    characters += uppercase;
-    characters += digits;
-    characters += symbols;
-
-    Random rnd = new Random();
-    var password = "";
-    for (int i = 0; i < 12; i++)
-    {
-        var number = rnd.Next(0, characters.Length);
-        password += characters[number];
-    }
-    Console.WriteLine("\nPassword Generated:");
-    Console.WriteLine(password);
-    Console.WriteLine("\n\n");
-}
 
 void GenerateSpecificPassword(bool? includeLowercaseBool, bool? includeUppercaseBool, bool? includeDigitsBool, bool? includeSymbolsBool)
 {
@@ -180,7 +106,7 @@ void GenerateSpecificPassword(bool? includeLowercaseBool, bool? includeUppercase
     if (includeUppercaseBool == true) characters += uppercase;
     if (includeDigitsBool == true) characters += digits;
     if (includeSymbolsBool == true) characters += symbols;
-    if (characters == "")
+    if (string.IsNullOrEmpty(characters))
     {
         Console.WriteLine("No character sets selected");
         return;
@@ -198,29 +124,43 @@ void GenerateSpecificPassword(bool? includeLowercaseBool, bool? includeUppercase
     Console.WriteLine("\n\n");
 }
 
-void GeneratePasswordWithLength(int length)
-{
-    Random rnd = new Random();
-    var password = "";
-    for (int i = 0; i < length; i++)
-    {
-        var number = rnd.Next(1, allcharacters.Length);
-        password += allcharacters[number];
-    }
-    Console.WriteLine("\nPassword Generated:");
-    Console.WriteLine(password);
-    Console.WriteLine("\n\n");
-}
 
-void GenerateDefaultPassword()
+void GenerateDefaultPassword(int? length=null,string? without=null)
 {
+    int passwordLength = length ?? 12;
     Random rnd = new Random();
     var password = "";
-    for (int i = 0; i < 12; i++)
+    string characters;
+    switch (without?.ToLower())
     {
-        var number = rnd.Next(0, allcharacters.Length);
-        password += allcharacters[number];
+        case "lower":
+            characters = uppercase + digits + symbols;
+            break;
+
+        case "upper":
+            characters = lowercase + digits + symbols;
+            break;
+
+        case "digits":
+            characters = uppercase + lowercase + symbols;
+            break;
+
+        case "symbols":
+            characters = uppercase + lowercase + digits;
+            break;
+
+        default:
+            characters = allcharacters;
+            break;
     }
+    for (int i = 0; i < passwordLength; i++)
+    {
+        var number = rnd.Next(0, characters.Length);
+        password += characters[number];
+    }
+
+
+
     Console.WriteLine("\nPassword Generated:");
     Console.WriteLine(password);
     Console.WriteLine("\n\n");
