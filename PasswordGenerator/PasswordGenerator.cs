@@ -91,5 +91,36 @@ namespace PasswordGenerator
             }
             return new string(password);
         }
+
+        public static void GeneratePasswordFromCustomSet(string customSet)
+        {
+            if (string.IsNullOrEmpty(customSet))
+            {
+                Console.ForegroundColor = ConsoleColor.Red;
+                Console.WriteLine("Character set cannot be empty.");
+                Console.ResetColor();
+                return;
+            }
+
+            Console.WriteLine("Enter password length:");
+            string? lengthInput = Console.ReadLine();
+            if (!int.TryParse(lengthInput, out int length) || length <= 0)
+            {
+                Console.ForegroundColor = ConsoleColor.Red;
+                Console.WriteLine("Invalid length. Try again.");
+                Console.ResetColor();
+                return;
+            }
+
+            Random rnd = new();
+            char[] password = new char[length];
+            for (int i = 0; i < length; i++)
+                password[i] = customSet[rnd.Next(customSet.Length)];
+
+            Console.ForegroundColor = ConsoleColor.Green;
+            Console.WriteLine($"Generated password: {new string(password)}");
+            Console.ResetColor();
+        }
+
     }
 }

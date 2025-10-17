@@ -13,10 +13,6 @@ class Program
     - details on the functionalities
   */
   // TODO: add the password_manager.md file to the solution. Everyone should be aware of the available features
-  // FIXME: add a blank line between the question and the options in the menu
-  // FIXME: if I type something outside of the valid range, re-ask for a valid input instead of kicking me out
-  // FIXME: the point 3 is not implemented correctly. I want to be able to provide my own character sets to use. (e.g. I want a password with only these letters "aAbBcC" randomly combined)
-  // FIXME: fix all the warnings you have in the solution. I have 5 warnings in my IDE.
   static void Main()
   {
     bool isRunning = true;
@@ -24,7 +20,7 @@ class Program
     while (isRunning)
     {
       Console.ForegroundColor = ConsoleColor.Cyan;
-      Console.WriteLine("Password Manager");
+      Console.WriteLine("Password Manager\n");
       Console.ResetColor();
 
       Console.WriteLine(
@@ -38,9 +34,18 @@ class Program
           "8. Exit"
       );
 
-      string input = Console.ReadLine();
-      switch (input)
+      string? input = Console.ReadLine();
+      if(string.IsNullOrEmpty(input))
       {
+        Console.ForegroundColor = ConsoleColor.Red;
+        Console.WriteLine("Invalid input! Please try again.");
+        Console.ResetColor();
+        continue;
+       }
+
+
+      switch (input)
+        {
         case "1":
           PasswordGenerator.GenerateDefaultPassword();
           break;
@@ -48,6 +53,7 @@ class Program
         case "2":
           Console.ForegroundColor = ConsoleColor.Cyan;
           Console.WriteLine("Enter length");
+          Console.WriteLine();
           Console.ResetColor();
           var length = Console.ReadLine();
           if (!int.TryParse(length, out int intLength) || intLength <= 0)
@@ -62,24 +68,62 @@ class Program
 
         case "3":
           Console.ForegroundColor = ConsoleColor.Cyan;
+          Console.WriteLine("Would you like to provide your own character set? (y/n)");
+          Console.ResetColor();
+          var customSetChoice = Console.ReadLine()?.Trim().ToLower();
+
+          if (customSetChoice == "y")
+                    {
+                        Console.ForegroundColor = ConsoleColor.Cyan;
+                        Console.WriteLine("Enter your custom character set (example: aAbBcC123!@#):");
+                        Console.ResetColor();
+                        string? customSet = Console.ReadLine();
+
+                        if (string.IsNullOrEmpty(customSet))
+                        {
+                            Console.ForegroundColor = ConsoleColor.Red;
+                            Console.WriteLine("Custom set cannot be empty. Try again.");
+                            Console.ResetColor();
+                            break;
+                        }
+
+                        PasswordGenerator.GeneratePasswordFromCustomSet(customSet);
+                        break;
+                    }
+
           Console.WriteLine("Choose sets");
           Console.WriteLine("Include lowercase letters(a - z) ? (y/n)");
+          Console.WriteLine();
           var includeLowercase = Console.ReadLine();
           Console.WriteLine("Include uppercase letters (A-Z) ? (y/n)");
+          Console.WriteLine();
           var includeUppercase = Console.ReadLine();
           Console.WriteLine("Include digits (0-9) ? (y/n)");
+          Console.WriteLine();
           var includeDigits = Console.ReadLine();
           Console.WriteLine("Include symbols (!@#$%^&*) ? (y/n)");
+          Console.WriteLine();
           var includeSymbols = Console.ReadLine();
           Console.ResetColor();
 
-          bool? includeLowercaseBool = includeLowercase.ToLower() == "y" ? true : includeLowercase.ToLower() == "n" ? false : null;
-          bool? includeUppercaseBool = includeUppercase.ToLower() == "y" ? true : includeUppercase.ToLower() == "n" ? false : null;
-          bool? includeDigitsBool = includeDigits.ToLower() == "y" ? true : includeDigits.ToLower() == "n" ? false : null;
-          bool? includeSymbolsBool = includeSymbols.ToLower() == "y" ? true : includeSymbols.ToLower() == "n" ? false : null;
+         bool? includeLowercaseBool =
+         !string.IsNullOrEmpty(includeLowercase) && includeLowercase.ToLower() == "y" ? true :
+         !string.IsNullOrEmpty(includeLowercase) && includeLowercase.ToLower() == "n" ? false : null;
 
-          PasswordGenerator.GenerateSpecificPassword(includeLowercaseBool, includeUppercaseBool, includeDigitsBool, includeSymbolsBool);
-          break;
+         bool? includeUppercaseBool =
+         !string.IsNullOrEmpty(includeUppercase) && includeUppercase.ToLower() == "y" ? true :
+         !string.IsNullOrEmpty(includeUppercase) && includeUppercase.ToLower() == "n" ? false : null;
+
+         bool? includeDigitsBool =
+         !string.IsNullOrEmpty(includeDigits) && includeDigits.ToLower() == "y" ? true :
+         !string.IsNullOrEmpty(includeDigits) && includeDigits.ToLower() == "n" ? false : null;
+
+         bool? includeSymbolsBool =
+         !string.IsNullOrEmpty(includeSymbols) && includeSymbols.ToLower() == "y" ? true :
+         !string.IsNullOrEmpty(includeSymbols) && includeSymbols.ToLower() == "n" ? false : null;
+
+         PasswordGenerator.GenerateSpecificPassword(includeLowercaseBool, includeUppercaseBool, includeDigitsBool, includeSymbolsBool);
+         break;
 
         case "4":
           PasswordGenerator.GenerateDefaultPassword(without: "lower");
@@ -106,10 +150,9 @@ class Program
 
         default:
           Console.ForegroundColor = ConsoleColor.Red;
-          Console.WriteLine("Unknown command");
+          Console.WriteLine("Invalid input! Please try again.");
           Console.ResetColor();
-          isRunning = false;
-          break;
+          continue;
       }
     }
   }
