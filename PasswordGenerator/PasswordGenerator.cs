@@ -94,14 +94,6 @@ namespace PasswordGenerator
 
         public static void GeneratePasswordFromCustomSet(string customSet)
         {
-            if (string.IsNullOrEmpty(customSet))
-            {
-                Console.ForegroundColor = ConsoleColor.Red;
-                Console.WriteLine("Character set cannot be empty.");
-                Console.ResetColor();
-                return;
-            }
-
             Console.WriteLine("Enter password length:");
             string? lengthInput = Console.ReadLine();
             if (!int.TryParse(lengthInput, out int length) || length <= 0)

@@ -84,14 +84,6 @@ namespace PasswordGenerator
 
                             string? customSet = Console.ReadLine();
 
-                            if (string.IsNullOrEmpty(customSet))
-                            {
-                                Console.ForegroundColor = ConsoleColor.Red;
-                                Console.WriteLine("Custom set cannot be empty. Try again.");
-                                Console.ResetColor();
-                                break;
-                            }
-
                             PasswordGenerator.GeneratePasswordFromCustomSet(customSet);
                             break;
                         }
