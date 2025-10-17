@@ -1,159 +1,174 @@
 ﻿using System;
-namespace PasswordGenerator;
 
-class Program
+namespace PasswordGenerator
 {
-
-  // TODO: add the README.md file. The content should be (roughly):
-  /*
-    - description of the project
-    - layout of the solution
-    - how to build the project
-    - how to run the project (what commands, the software requirements, and so on)
-    - details on the functionalities
-  */
-  // TODO: add the password_manager.md file to the solution. Everyone should be aware of the available features
-  static void Main()
-  {
-    bool isRunning = true;
-
-    while (isRunning)
+    class Program
     {
-      Console.ForegroundColor = ConsoleColor.Cyan;
-      Console.WriteLine("Password Manager\n");
-      Console.ResetColor();
+        // TODO: add the README.md file. The content should be (roughly):
+        /*
+            - description of the project
+            - layout of the solution
+            - how to build the project
+            - how to run the project (what commands, the software requirements, and so on)
+            - details on the functionalities
+        */
+        // TODO: add the password_manager.md file to the solution. Everyone should be aware of the available features
 
-      Console.WriteLine(
-          "1. Generate default password\r\n" +
-          "2. Generate password of specific length\r\n" +
-          "3. Generate password from specific character sets\r\n" +
-          "4. Generate password without lowercase\r\n" +
-          "5. Generate password without uppercase\r\n" +
-          "6. Generate password without digits\r\n" +
-          "7. Generate password without symbols\r\n" +
-          "8. Exit"
-      );
-
-      string? input = Console.ReadLine();
-      if(string.IsNullOrEmpty(input))
-      {
-        Console.ForegroundColor = ConsoleColor.Red;
-        Console.WriteLine("Invalid input! Please try again.");
-        Console.ResetColor();
-        continue;
-       }
-
-
-      switch (input)
+        static void Main()
         {
-        case "1":
-          PasswordGenerator.GenerateDefaultPassword();
-          break;
+            bool isRunning = true;
 
-        case "2":
-          Console.ForegroundColor = ConsoleColor.Cyan;
-          Console.WriteLine("Enter length");
-          Console.WriteLine();
-          Console.ResetColor();
-          var length = Console.ReadLine();
-          if (!int.TryParse(length, out int intLength) || intLength <= 0)
-          {
-            Console.ForegroundColor = ConsoleColor.Red;
-            Console.WriteLine("Invalid length");
-            Console.ResetColor();
-            break;
-          }
-          PasswordGenerator.GenerateDefaultPassword(intLength);
-          break;
+            while (isRunning)
+            {
+                Console.ForegroundColor = ConsoleColor.Cyan;
+                Console.WriteLine("Password Manager\n");
+                Console.ResetColor();
 
-        case "3":
-          Console.ForegroundColor = ConsoleColor.Cyan;
-          Console.WriteLine("Would you like to provide your own character set? (y/n)");
-          Console.ResetColor();
-          var customSetChoice = Console.ReadLine()?.Trim().ToLower();
+                Console.WriteLine(
+                    "1. Generate default password\r\n" +
+                    "2. Generate password of specific length\r\n" +
+                    "3. Generate password from specific character sets\r\n" +
+                    "4. Generate password without lowercase\r\n" +
+                    "5. Generate password without uppercase\r\n" +
+                    "6. Generate password without digits\r\n" +
+                    "7. Generate password without symbols\r\n" +
+                    "8. Exit"
+                );
 
-          if (customSetChoice == "y")
-                    {
+                string? input = Console.ReadLine();
+
+                if (string.IsNullOrEmpty(input))
+                {
+                    Console.ForegroundColor = ConsoleColor.Red;
+                    Console.WriteLine("Invalid input! Please try again.");
+                    Console.ResetColor();
+                    continue;
+                }
+
+                switch (input)
+                {
+                    case "1":
+                        PasswordGenerator.GenerateDefaultPassword();
+                        break;
+
+                    case "2":
                         Console.ForegroundColor = ConsoleColor.Cyan;
-                        Console.WriteLine("Enter your custom character set (example: aAbBcC123!@#):");
+                        Console.WriteLine("Enter length");
+                        Console.WriteLine();
                         Console.ResetColor();
-                        string? customSet = Console.ReadLine();
 
-                        if (string.IsNullOrEmpty(customSet))
+                        var length = Console.ReadLine();
+                        if (!int.TryParse(length, out int intLength) || intLength <= 0)
                         {
                             Console.ForegroundColor = ConsoleColor.Red;
-                            Console.WriteLine("Custom set cannot be empty. Try again.");
+                            Console.WriteLine("Invalid length");
                             Console.ResetColor();
                             break;
                         }
 
-                        PasswordGenerator.GeneratePasswordFromCustomSet(customSet);
+                        PasswordGenerator.GenerateDefaultPassword(intLength);
                         break;
-                    }
 
-          Console.WriteLine("Choose sets");
-          Console.WriteLine("Include lowercase letters(a - z) ? (y/n)");
-          Console.WriteLine();
-          var includeLowercase = Console.ReadLine();
-          Console.WriteLine("Include uppercase letters (A-Z) ? (y/n)");
-          Console.WriteLine();
-          var includeUppercase = Console.ReadLine();
-          Console.WriteLine("Include digits (0-9) ? (y/n)");
-          Console.WriteLine();
-          var includeDigits = Console.ReadLine();
-          Console.WriteLine("Include symbols (!@#$%^&*) ? (y/n)");
-          Console.WriteLine();
-          var includeSymbols = Console.ReadLine();
-          Console.ResetColor();
+                    case "3":
+                        Console.ForegroundColor = ConsoleColor.Cyan;
+                        Console.WriteLine("Would you like to provide your own character set? (y/n)");
+                        Console.ResetColor();
 
-         bool? includeLowercaseBool =
-         !string.IsNullOrEmpty(includeLowercase) && includeLowercase.ToLower() == "y" ? true :
-         !string.IsNullOrEmpty(includeLowercase) && includeLowercase.ToLower() == "n" ? false : null;
+                        var customSetChoice = Console.ReadLine()?.Trim().ToLower();
 
-         bool? includeUppercaseBool =
-         !string.IsNullOrEmpty(includeUppercase) && includeUppercase.ToLower() == "y" ? true :
-         !string.IsNullOrEmpty(includeUppercase) && includeUppercase.ToLower() == "n" ? false : null;
+                        if (customSetChoice == "y")
+                        {
+                            Console.ForegroundColor = ConsoleColor.Cyan;
+                            Console.WriteLine("Enter your custom character set (example: aAbBcC123!@#):");
+                            Console.ResetColor();
 
-         bool? includeDigitsBool =
-         !string.IsNullOrEmpty(includeDigits) && includeDigits.ToLower() == "y" ? true :
-         !string.IsNullOrEmpty(includeDigits) && includeDigits.ToLower() == "n" ? false : null;
+                            string? customSet = Console.ReadLine();
 
-         bool? includeSymbolsBool =
-         !string.IsNullOrEmpty(includeSymbols) && includeSymbols.ToLower() == "y" ? true :
-         !string.IsNullOrEmpty(includeSymbols) && includeSymbols.ToLower() == "n" ? false : null;
+                            if (string.IsNullOrEmpty(customSet))
+                            {
+                                Console.ForegroundColor = ConsoleColor.Red;
+                                Console.WriteLine("Custom set cannot be empty. Try again.");
+                                Console.ResetColor();
+                                break;
+                            }
 
-         PasswordGenerator.GenerateSpecificPassword(includeLowercaseBool, includeUppercaseBool, includeDigitsBool, includeSymbolsBool);
-         break;
+                            PasswordGenerator.GeneratePasswordFromCustomSet(customSet);
+                            break;
+                        }
 
-        case "4":
-          PasswordGenerator.GenerateDefaultPassword(without: "lower");
-          break;
+                        Console.WriteLine("Choose sets");
+                        Console.WriteLine("Include lowercase letters (a-z)? (y/n)");
+                        Console.WriteLine();
+                        var includeLowercase = Console.ReadLine();
 
-        case "5":
-          PasswordGenerator.GenerateDefaultPassword(without: "upper");
-          break;
+                        Console.WriteLine("Include uppercase letters (A-Z)? (y/n)");
+                        Console.WriteLine();
+                        var includeUppercase = Console.ReadLine();
 
-        case "6":
-          PasswordGenerator.GenerateDefaultPassword(without: "digits");
-          break;
+                        Console.WriteLine("Include digits (0-9)? (y/n)");
+                        Console.WriteLine();
+                        var includeDigits = Console.ReadLine();
 
-        case "7":
-          PasswordGenerator.GenerateDefaultPassword(without: "symbols");
-          break;
+                        Console.WriteLine("Include symbols (!@#$%^&*)? (y/n)");
+                        Console.WriteLine();
+                        var includeSymbols = Console.ReadLine();
 
-        case "8":
-          Console.ForegroundColor = ConsoleColor.Yellow;
-          Console.WriteLine("Exiting");
-          Console.ResetColor();
-          isRunning = false;
-          break;
+                        Console.ResetColor();
 
-        default:
-          Console.ForegroundColor = ConsoleColor.Red;
-          Console.WriteLine("Invalid input! Please try again.");
-          Console.ResetColor();
-          continue;
-      }
+                        bool? includeLowercaseBool =
+                            !string.IsNullOrEmpty(includeLowercase) && includeLowercase.ToLower() == "y" ? true :
+                            !string.IsNullOrEmpty(includeLowercase) && includeLowercase.ToLower() == "n" ? false : null;
+
+                        bool? includeUppercaseBool =
+                            !string.IsNullOrEmpty(includeUppercase) && includeUppercase.ToLower() == "y" ? true :
+                            !string.IsNullOrEmpty(includeUppercase) && includeUppercase.ToLower() == "n" ? false : null;
+
+                        bool? includeDigitsBool =
+                            !string.IsNullOrEmpty(includeDigits) && includeDigits.ToLower() == "y" ? true :
+                            !string.IsNullOrEmpty(includeDigits) && includeDigits.ToLower() == "n" ? false : null;
+
+                        bool? includeSymbolsBool =
+                            !string.IsNullOrEmpty(includeSymbols) && includeSymbols.ToLower() == "y" ? true :
+                            !string.IsNullOrEmpty(includeSymbols) && includeSymbols.ToLower() == "n" ? false : null;
+
+                        PasswordGenerator.GenerateSpecificPassword(
+                            includeLowercaseBool,
+                            includeUppercaseBool,
+                            includeDigitsBool,
+                            includeSymbolsBool
+                        );
+                        break;
+
+                    case "4":
+                        PasswordGenerator.GenerateDefaultPassword(without: "lower");
+                        break;
+
+                    case "5":
+                        PasswordGenerator.GenerateDefaultPassword(without: "upper");
+                        break;
+
+                    case "6":
+                        PasswordGenerator.GenerateDefaultPassword(without: "digits");
+                        break;
+
+                    case "7":
+                        PasswordGenerator.GenerateDefaultPassword(without: "symbols");
+                        break;
+
+                    case "8":
+                        Console.ForegroundColor = ConsoleColor.Yellow;
+                        Console.WriteLine("Exiting");
+                        Console.ResetColor();
+                        isRunning = false;
+                        break;
+
+                    default:
+                        Console.ForegroundColor = ConsoleColor.Red;
+                        Console.WriteLine("Invalid input! Please try again.");
+                        Console.ResetColor();
+                        continue;
+                }
+            }
+        }
     }
-  }
 }
