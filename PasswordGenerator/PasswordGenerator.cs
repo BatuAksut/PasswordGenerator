@@ -104,7 +104,7 @@ namespace PasswordGenerator
                 return;
             }
 
-            Random rnd = new();
+           
             char[] password = new char[length];
             for (int i = 0; i < length; i++)
                 password[i] = customSet[rnd.Next(customSet.Length)];
