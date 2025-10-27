@@ -1,9 +1,11 @@
 # Password Manager Features
 
 ## Overview
+
 Usage details of the Password Manager app:
 
 ### Menu Options
+
 1. **Generate default password**  
    Generates a password with a balanced mix of lowercase, uppercase, digits, and symbols.
 
@@ -21,6 +23,7 @@ Usage details of the Password Manager app:
    Terminates the program.
 
 ### Notes
+
 - Invalid inputs are handled. The user is re-prompted for valid input.
 - Color-coded console outputs are used for better readability.
 - The custom set feature added for specialized use cases.
